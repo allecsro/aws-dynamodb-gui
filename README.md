@@ -1,6 +1,9 @@
 # dynotool
 A web based GUI for Amazon DynamoDB, especially useful for DynamoDB Local
 
+[![Build Status](https://travis-ci.org/allecsro/dynotool.svg?branch=master)](https://travis-ci.org/allecsro/dynotool)
+
+
 ## Starting the dev server
 
 Make sure you have Node.js installed.
