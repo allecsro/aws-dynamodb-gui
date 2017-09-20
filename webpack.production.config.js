@@ -3,6 +3,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ReplacePlugin = require('replace-webpack-plugin');
+
+const env = require('./config');
 
 const config = {
   devtool: 'cheap-module-source-map',
@@ -41,6 +44,15 @@ const config = {
       { from: './vendors', to: 'vendors' },
       { from: './assets/images', to: 'images' }
     ]),
+    new ReplacePlugin({
+      entry: 'index.html',
+      output: '../dist/index.html',
+      data: {
+        config: JSON.stringify(env),
+        css: '<link type="text/css" rel="stylesheet" href="/styles/style.css">',
+        js: '<script type="text/javascript" src="/bundle.js"></script>'
+      }
+    }),
   ],
 
   module: {

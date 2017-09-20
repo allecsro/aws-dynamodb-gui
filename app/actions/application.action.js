@@ -36,21 +36,6 @@ const performSupportCheck = () => ({
 });
 
 /**
- * Loads the application environment variables from the API
- * @returns {function(*=)}
- */
-export const loadEnvironment = () => {
-  return (dispatch) => {
-    return dispatch({
-      type: INIT_AWS,
-      payload: new Promise((resolve) => {
-        resolve(true);
-      }),
-    });
-  };
-};
-
-/**
  * Switch profile
  */
 export const switchProfile = (profile) => {
@@ -61,6 +46,32 @@ export const switchProfile = (profile) => {
     });
 
     dispatch(initDynamoDBAws());
+  };
+};
+
+/**
+ * Loads the application environment variables from the API
+ * @returns {function(*=)}
+ */
+export const loadEnvironment = () => {
+  return (dispatch, getState) => {
+    return dispatch({
+      type: INIT_AWS,
+      payload: new Promise((resolve, reject) => {
+        const state = getState();
+
+        const profile =
+          state.application.currentProfile || Object.keys(state.application.profiles)[0];
+
+        if (!profile) {
+          reject('No configuration profile found');
+        }
+
+        dispatch(switchProfile(profile));
+
+        resolve(true);
+      }),
+    });
   };
 };
 
@@ -77,7 +88,6 @@ export const initialize = () => {
           payload: new Promise(resolve => setTimeout(resolve, 1)),
         }),
         dispatch(loadEnvironment()),
-        dispatch(initDynamoDBAws()),
       ]),
     }).then(() => {
       log.debug('Application initialization: checked');

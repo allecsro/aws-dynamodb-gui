@@ -4,6 +4,9 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const ReplacePlugin = require('replace-webpack-plugin');
+
+const env = require('./config');
 
 const config = {
   devtool: 'cheap-module-eval-source-map',
@@ -91,6 +94,15 @@ const config = {
     ]),
     new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
     new webpack.HotModuleReplacementPlugin(),
+    new ReplacePlugin({
+      entry: 'index.html',
+      output: '../build/index.html',
+      data: {
+        config: JSON.stringify(env),
+        css: '<link type="text/css" rel="stylesheet" href="/styles/style.css">',
+        js: '<script type="text/javascript" src="/bundle.js"></script>'
+      }
+    })
   ],
 };
 

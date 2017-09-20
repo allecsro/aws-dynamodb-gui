@@ -19,14 +19,15 @@ class TablesContainer extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.match.params.profile &&
+    if (this.props.appProfile && this.props.match.params.profile &&
         this.props.match.params.profile !== this.props.appProfile) {
       this.props.switchProfile(this.props.match.params.profile);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.appProfile !== nextProps.match.params.profile) {
+    if (this.props.appProfile && nextProps.match.params.profile &&
+        this.props.appProfile !== nextProps.match.params.profile) {
       this.props.switchProfile(nextProps.match.params.profile);
     }
   }

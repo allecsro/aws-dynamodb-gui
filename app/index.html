@@ -6,6 +6,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="author" content="Alecsandru Dinu">
   <title>DynamoDB User Interface</title>
+  <!-- replace:css --><!-- endreplace -->
 </head>
 <body>
     <div id="root"></div>
@@ -15,15 +16,24 @@
         application: {
           initialized: false,
           supported: false,
-          currentProfile: 'local',
-          profiles: {
+          currentProfile: null,
+          profiles:
+          <!-- replace:config -->
+          {
             local: {
               region: 'us-east-1',
               accessKeyId: 'AWS_ACCESS_KEY',
               secretAccessKey: 'AWS_ACCESS_SECRET',
               endpoint: 'http://localhost:7000'
+            },
+            staging: {
+              region: 'us-east-1',
+              accessKeyId: 'AWS_ACCESS_KEY',
+              secretAccessKey: 'AWS_ACCESS_SECRET',
+              endpoint: 'http://localhost:7000'
             }
-          },
+          }
+          <!-- endreplace -->
         },
         dynamodb: {
           tables: [],
@@ -34,5 +44,6 @@
         }
       }
     </script>
+    <!-- replace:js --><!-- endreplace -->
 </body>
 </html>
