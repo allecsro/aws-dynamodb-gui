@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="author" content="Alecsandru Dinu">
+  <title>DynamoDB User Interface</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/javascript">
+      window.DEBUG = false;
+      window.INITIAL_STATE = {
+        application: {
+          initialized: false,
+          supported: false,
+          currentProfile: 'local',
+          profiles: {
+            local: {
+              region: 'us-east-1',
+              accessKeyId: 'AWS_ACCESS_KEY',
+              secretAccessKey: 'AWS_ACCESS_SECRET',
+              endpoint: 'http://localhost:7000'
+            }
+          },
+        },
+        dynamodb: {
+          tables: [],
+          table: {},
+          items: [],
+          isLoadingTables: false,
+          isLoadingItems: false
+        }
+      }
+    </script>
+</body>
+</html>
