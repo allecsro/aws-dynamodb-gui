@@ -1,0 +1,19 @@
+sudo: false
+language: node_js
+cache:
+  directories:
+    - node_modules
+branches:
+  only:
+      - master
+notifications:
+  email: false
+node_js:
+  - 8.5.0
+before_install:
+  - npm i -g npm@^5.4.2pm
+before_script:
+  - npm prune
+script:
+  - npm run test
+install: npm install
