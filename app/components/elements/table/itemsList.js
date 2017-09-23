@@ -4,6 +4,8 @@ import ItemContainer from '../../containers/itemContainer';
 
 // TODO AD: this should a presentation component so the logic must be in a container
 const TableItemsList = (props) => {
+  if (!props.items || !props.items.length) return null;
+
   const hashKey = props.table.KeySchema[0].AttributeName;
   const rangeKey = props.table.KeySchema.length === 2 ?
     props.table.KeySchema[1].AttributeName : false;
@@ -27,16 +29,20 @@ const TableItemsList = (props) => {
     const rk = rangeKey ? item[rangeKey] : null;
     body.push(
       <tr key={i}>
-        {headers.map(header => (
-          <td key={`${header}_${i}`}>
-            {header === hashKey ?
-              <a href={`#${hk}`} onClick={() => props.getItem(props.table.TableName, hk, rk)}>
-                {item[header]}
-              </a>
-              :
-              item[header]}
-          </td>
-        ))}
+        {headers.map((header) => {
+          const value = item[header] ? item[header].toString() : '';
+          return (
+            <td key={`${header}_${i}`}>
+              {header === hashKey ?
+                <a href={`#${hk}`} onClick={() => props.getItem(props.table.TableName, hk, rk)}>
+                  {value}
+                </a>
+                :
+                value
+              }
+            </td>
+          );
+        })}
       </tr>,
     );
   }

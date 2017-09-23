@@ -7,9 +7,8 @@ import Table from '../elements/table';
 
 class TableContainer extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.props.loadTable(props.match.params.name);
+  componentWillMount() {
+    this.props.loadTable(this.props.match.params.name);
   }
 
   componentWillReceiveProps(nextProps) {

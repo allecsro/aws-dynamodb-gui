@@ -53,6 +53,7 @@ export const loadTable = tableName => ({
  */
 export const scanItems = (tableName, filters) => {
   return (dispatch) => {
+    log.debug('test');
     dispatch({
       type: SCAN_ITEMS,
       payload: AWS.scanItems(tableName, filters),

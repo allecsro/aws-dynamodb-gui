@@ -7,9 +7,8 @@ import TableItemsList from '../elements/table/itemsList';
 
 class ItemsContainer extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.props.scanItems(props.table.TableName, {});
+  componentWillMount() {
+    this.props.scanItems(this.props.table.TableName, {});
   }
 
   render() {
