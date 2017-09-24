@@ -39,7 +39,7 @@ class Tables extends React.Component {
       return (
         <tr key={id}>
           <td style={{ width: 40, textAlign: 'center' }}>
-            <input type="radio" name="gender" />
+            <input type="radio" />
           </td>
           <td>
             <Link to={`/tables/${name}`}>{name}</Link>

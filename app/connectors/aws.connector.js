@@ -153,9 +153,8 @@ export default class AwsConnector {
       };
 
       docClient.put(params, (error, data) => {
-        console.log(error);
         if (error) {
-          console.log(error);
+          reject({ error });
         } else {
           resolve(data);
         }
