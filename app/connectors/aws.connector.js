@@ -37,6 +37,7 @@ export default class AwsConnector {
 
     this.dynamodb = new AWS.DynamoDB();
     this.docClient = new AWS.DynamoDB.DocumentClient({
+      maxRetries: 0,
       httpOptions: {
         xhrAsync: false,
       },
@@ -131,6 +132,30 @@ export default class AwsConnector {
       docClient.get(params, (error, data) => {
         if (error) {
           reject({ error });
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+  /**
+   * Updates an existing item from a table
+   * @param table
+   * @param item
+   */
+  updateItem(table, item) {
+    const docClient = this.docClient;
+    return new Promise((resolve, reject) => {
+      const params = {
+        TableName: table.TableName,
+        Item: item,
+      };
+
+      docClient.put(params, (error, data) => {
+        console.log(error);
+        if (error) {
+          console.log(error);
         } else {
           resolve(data);
         }

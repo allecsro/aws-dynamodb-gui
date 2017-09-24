@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Inspector from 'react-json-inspector';
 import { connect } from 'react-redux';
-import { clearItem } from '../../actions/dynamodb.action';
+import InteractiveSelection from '../elements/interactiveSelection';
+import { clearItem, updateItem, saveItem } from '../../actions/dynamodb.action';
 
 const ItemContainer = (props) => {
   if (props.item) {
@@ -17,11 +18,14 @@ const ItemContainer = (props) => {
           </div>
           <div className="modal-body">
             <div className="content">
-              <Inspector data={props.item} />
+              <Inspector
+                data={props.item}
+                interactiveLabel={p => <InteractiveSelection {...p} onChange={props.updateItem} />}
+              />
             </div>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-primary">Save</button>
+            <button className="btn btn-primary" onClick={props.saveItem}>Save</button>
             <a href="#modals" className="btn btn-link" onClick={props.clearItem}>Close</a>
           </div>
         </div>
@@ -35,6 +39,8 @@ const ItemContainer = (props) => {
 ItemContainer.propTypes = {
   item: PropTypes.shape({}),
   clearItem: PropTypes.func.isRequired,
+  updateItem: PropTypes.func.isRequired,
+  saveItem: PropTypes.func.isRequired,
 };
 
 ItemContainer.defaultProps = {
@@ -51,7 +57,12 @@ const mapDispatchToProps = dispatch => ({
   clearItem: () => {
     dispatch(clearItem());
   },
-
+  updateItem: (keypath, value) => {
+    dispatch(updateItem(keypath, value));
+  },
+  saveItem: () => {
+    dispatch(saveItem());
+  },
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ItemContainer));

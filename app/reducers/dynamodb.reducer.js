@@ -1,3 +1,4 @@
+import set from 'lodash/set';
 import {
   LOAD_TABLES,
   FILTER_TABLES,
@@ -6,6 +7,7 @@ import {
   QUERY_ITEMS,
   GET_ITEM,
   CLEAR_ITEM,
+  UPDATE_ITEM,
 } from '../actions/dynamodb.action';
 
 const DynamoDbReducer = (state = window.INITIAL_STATE.dynamodb, action) => {
@@ -98,6 +100,13 @@ const DynamoDbReducer = (state = window.INITIAL_STATE.dynamodb, action) => {
     case CLEAR_ITEM:
       return Object.assign({}, state, {
         item: null,
+      });
+
+    case UPDATE_ITEM:
+      return Object.assign({}, state, {
+        item: set(
+          Object.assign({}, state.item), action.payload.keypath, action.payload.value,
+        ),
       });
 
     default:

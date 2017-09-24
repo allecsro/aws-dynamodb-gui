@@ -15,6 +15,7 @@ export const SCAN_ITEMS = 'SCAN_ITEMS';
 export const QUERY_ITEMS = 'QUERY_ITEMS';
 export const GET_ITEM = 'GET_ITEM';
 export const CLEAR_ITEM = 'CLEAR_ITEM';
+export const UPDATE_ITEM = 'UPDATE_ITEM';
 
 /**
  * Loads the list of tables from the dynamodb
@@ -109,6 +110,35 @@ export const getItem = (tableName, hashKey, rangeKey) => {
 export const clearItem = () => ({
   type: CLEAR_ITEM,
 });
+
+
+/**
+ * Updates the current item from the current table in the store
+ * @returns action
+ */
+export const updateItem = (keypath, value) => ({
+  type: UPDATE_ITEM,
+  payload: { keypath, value },
+});
+
+/**
+ * Saves the current item
+ * @returns {function(*=)}
+ */
+export const saveItem = () => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const table = state.dynamodb.table;
+    const item = state.dynamodb.item;
+    AWS
+      .updateItem(table, item)
+      .then(() => {
+        dispatch({
+          type: CLEAR_ITEM,
+        });
+      });
+  };
+};
 
 /**
  * Initializes the DynamoDB AWS client
