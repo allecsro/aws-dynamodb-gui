@@ -29,7 +29,7 @@ const TableIndexesTab = (props) => {
             </tr>
           </thead>
           <tbody>
-            {props.table.GlobalSecondaryIndexes.map(
+            {props.table.GlobalSecondaryIndexes && props.table.GlobalSecondaryIndexes.map(
               (index) => {
                 const hashKey = index.KeySchema[0].AttributeName;
                 const rangeKey = index.KeySchema.length === 2 ?
@@ -52,6 +52,25 @@ const TableIndexesTab = (props) => {
             )}
           </tbody>
         </table>
+
+        {!props.table.GlobalSecondaryIndexes &&
+        <div className="empty">
+          <div className="empty-icon">
+            <i className="icon icon-search" />
+          </div>
+          <p className="empty-title h5">There are no indexes defined for this table</p>
+          <p className="empty-subtitle">
+            Global Secondary Indexes (GSI) allow you to query efficiently over
+            any field (attribute) in your DynamoDB table.
+            <br />
+            GSIs can treat any table attribute
+            as a key, even attributes not present in all items.
+          </p>
+          <div className="empty-action">
+            <button className="btn btn-primary">Create index</button>
+          </div>
+        </div>
+        }
       </div>
     </div>
   );

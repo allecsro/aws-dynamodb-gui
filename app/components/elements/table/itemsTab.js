@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ItemsContainer from '../../containers/itemsContainer';
 
+const PAGE_SIZE = 100;
+
 const TableItemsTab = (props) => {
   const hashKey = props.table.KeySchema[0].AttributeName;
   const rangeKey = props.table.KeySchema.length === 2 ?
@@ -56,11 +58,13 @@ const TableItemsTab = (props) => {
                     </a>
                   </li>
                   <li>
-                    <span>
-                      Viewing 1 to 100 items
-                    </span>
+                    {props.pagination &&
+                      <span>
+                        Viewing {props.pagination.from} to {props.pagination.to} items
+                      </span>
+                    }
                   </li>
-                  <li className="page-item">
+                  <li className={`page-item ${props.pagination && props.pagination.to - props.pagination.from === (PAGE_SIZE - 1) ? '' : 'disabled'}`}>
                     <a href="#next">
                       <div className="page-item-subtitle"><i className="icon icon-arrow-right mr-1" /></div>
                     </a>
@@ -105,6 +109,10 @@ const TableItemsTab = (props) => {
 };
 
 TableItemsTab.propTypes = {
+  pagination: PropTypes.shape({
+    from: PropTypes.number,
+    to: PropTypes.number,
+  }),
   table: PropTypes.shape({
     AttributeDefinitions: PropTypes.arrayOf(PropTypes.object),
     CreationDateTime: PropTypes.instanceOf(Date),
@@ -115,6 +123,10 @@ TableItemsTab.propTypes = {
     TableName: PropTypes.string,
     TableSizeBytes: PropTypes.number,
   }).isRequired,
+};
+
+TableItemsTab.defaultProps = {
+  pagination: null,
 };
 
 export default TableItemsTab;

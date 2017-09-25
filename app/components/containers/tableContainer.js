@@ -32,6 +32,10 @@ TableContainer.propTypes = {
     params: PropTypes.object,
     url: PropTypes.string,
   }).isRequired,
+  pagination: PropTypes.shape({
+    from: PropTypes.number,
+    to: PropTypes.number,
+  }),
   table: PropTypes.shape({
     AttributeDefinitions: PropTypes.arrayOf(PropTypes.object),
     ItemCount: PropTypes.number,
@@ -46,13 +50,17 @@ TableContainer.propTypes = {
 TableContainer.defaultProps = {
   tab: 'overview',
   table: {},
+  pagination: null,
 };
-
 
 const mapStateToProps = (state, ownProps) => {
   return {
     tab: ownProps.match.params.view,
     table: state.dynamodb.table,
+    pagination: {
+      from: 1,
+      to: state.dynamodb.scanCount,
+    },
   };
 };
 
