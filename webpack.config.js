@@ -5,7 +5,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const ReplacePlugin = require('replace-webpack-plugin');
-const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const env = require('./config');
 
@@ -103,8 +102,7 @@ const config = {
         css: '<link type="text/css" rel="stylesheet" href="/styles/style.css">',
         js: '<script type="text/javascript" src="/bundle.js"></script>'
       }
-    }),
-    new DashboardPlugin({ port: 8080 })
+    })
   ],
 };
 
