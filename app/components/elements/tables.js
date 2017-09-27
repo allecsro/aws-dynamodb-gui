@@ -3,8 +3,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Shoestring from 'tablesaw';
 
 class Tables extends React.Component {
+
+
+  componentDidMount() {
+    Shoestring(document).trigger('enhance.tablesaw');
+  }
+
+  componentDidUpdate() {
+    Shoestring(document).trigger('enhance.tablesaw');
+  }
 
   /**
    * Renders the list of tables
@@ -39,7 +49,7 @@ class Tables extends React.Component {
       return (
         <tr key={id}>
           <td style={{ width: 40, textAlign: 'center' }}>
-            <input type="radio" />
+            <input type="radio" checked={this.props.table && table.TableName === this.props.table.TableName} />
           </td>
           <td>
             <Link to={`/tables/${name}`}>{name}</Link>
@@ -56,15 +66,15 @@ class Tables extends React.Component {
   render() {
     return (
       <div className="container">
-        <table className="table table-striped table-hover">
+        <table className="table tablesaw tablesaw-swipe" data-tablesaw-mode="swipe" data-tablesaw-sortable data-tablesaw-sortable-switch>
           <thead>
             <tr>
-              <th />
-              <th>Name</th>
-              <th>Partition Key</th>
-              <th>Sort Key</th>
-              <th>Item Count</th>
-              <th>Indexes</th>
+              <th scope="col" data-tablesaw-priority="persist" />
+              <th scope="col" data-tablesaw-priority="persist" data-tablesaw-sortable-col data-tablesaw-sortable-default-col>Name</th>
+              <th scope="col" data-tablesaw-sortable-col>Partition Key</th>
+              <th scope="col" data-tablesaw-sortable-col >Sort Key</th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-numeric>Item Count</th>
+              <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-numeric>Indexes</th>
             </tr>
           </thead>
           <tbody>
@@ -89,10 +99,20 @@ Tables.propTypes = {
       TableSizeBytes: PropTypes.number,
     }),
   ),
+  table: PropTypes.shape({
+    map: PropTypes.func,
+    AttributeDefinitions: PropTypes.arrayOf(PropTypes.object),
+    ItemCount: PropTypes.number,
+    KeySchema: PropTypes.arrayOf(PropTypes.object),
+    TableArn: PropTypes.string,
+    TableName: PropTypes.string,
+    TableSizeBytes: PropTypes.number,
+  }),
 };
 
 Tables.defaultProps = {
   tables: false,
+  table: null,
 };
 
 

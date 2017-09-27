@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import SplitPane from 'react-split-pane';
 import Tables from '../elements/tables';
 import Empty from '../elements/empty';
 import TableContainer from './tableContainer';
@@ -24,15 +23,16 @@ const TablesAndTableContainer = (props) => {
           Viewing {props.size} tables.
         </div>
       </div>
-      <div className="container s-tables">
-        <SplitPane split="vertical" minSize={200} defaultSize={250}>
-          <div>
+      <div className="container">
+        <div className="columns">
+          <div className="column col-3">
             <Tables {...props} />
           </div>
-          <div>
+          <div className="divider-vert p-0" />
+          <div className="column col-9">
             <TableContainer {...props} />
           </div>
-        </SplitPane>
+        </div>
       </div>
     </div>
   );
@@ -51,16 +51,27 @@ TablesAndTableContainer.propTypes = {
       TableSizeBytes: PropTypes.number,
     }),
   ),
+  table: PropTypes.shape({
+    map: PropTypes.func,
+    AttributeDefinitions: PropTypes.arrayOf(PropTypes.object),
+    ItemCount: PropTypes.number,
+    KeySchema: PropTypes.arrayOf(PropTypes.object),
+    TableArn: PropTypes.string,
+    TableName: PropTypes.string,
+    TableSizeBytes: PropTypes.number,
+  }),
 };
 
 TablesAndTableContainer.defaultProps = {
   size: 0,
   tables: [],
+  table: null,
 };
 
 const mapStateToProps = (state) => {
   return {
     tables: state.dynamodb.tables,
+    table: state.dynamodb.table,
     size: state.dynamodb.tables.length,
   };
 };
