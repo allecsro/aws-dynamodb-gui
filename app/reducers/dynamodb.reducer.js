@@ -22,6 +22,8 @@ const DynamoDbReducer = (state = window.INITIAL_STATE.dynamodb, action) => {
     case `${LOAD_TABLES}_FULFILLED`:
       return Object.assign({}, state, {
         tables: action.payload.meta,
+        totalTablesCount: action.payload.meta.length,
+        filteredTablesCount: action.payload.meta.length,
         isLoadingTables: false,
       });
 
@@ -33,18 +35,25 @@ const DynamoDbReducer = (state = window.INITIAL_STATE.dynamodb, action) => {
 
     case FILTER_TABLES: {
       const unfilteredTables = state.unfilteredTables ? state.unfilteredTables : state.tables;
-      const tables = [];
-      const filter = action.payload.toLowerCase();
-      for (let i = 0; i < unfilteredTables.length; i += 1) {
-        const table = unfilteredTables[i];
-        if (table.TableName.toLowerCase().indexOf(filter) >= 0) {
-          tables.push(table);
+      let tables = [];
+
+      if (action.payload || action.payload.trim().length) {
+        const filter = action.payload.toLowerCase();
+        for (let i = 0; i < unfilteredTables.length; i += 1) {
+          const table = unfilteredTables[i];
+          if (table.TableName.toLowerCase().indexOf(filter) >= 0) {
+            tables.push(table);
+          }
         }
+      } else {
+        tables = unfilteredTables;
       }
+
 
       return Object.assign({}, state, {
         unfilteredTables,
         tables,
+        filteredTablesCount: tables.length,
       });
     }
 

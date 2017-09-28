@@ -35,7 +35,9 @@ export default class AwsConnector {
       }),
     );
 
-    this.dynamodb = new AWS.DynamoDB();
+    this.dynamodb = new AWS.DynamoDB({
+      maxRetries: 0,
+    });
     this.docClient = new AWS.DynamoDB.DocumentClient({
       maxRetries: 0,
       httpOptions: {
@@ -108,28 +110,34 @@ export default class AwsConnector {
 
   /**
    * Returns an item from a table based on its hash and range keys
-   * @param tableName the fullname of the table
-   * @param hashKey Required hash key parameter name
-   * @param hashKeyValue The value of the hash key
-   * @param rangeKey Optional range key
-   * @param rangeKeyValue Optional range key value
+   * @param table
+   * @param hashKey
+   * @param rangeKey
    */
-  getItem(tableName, hashKey, hashKeyValue, rangeKey, rangeKeyValue) {
-    const docClient = this.docClient;
+  getItem(table, hashKey, rangeKey) {
+    const dynamodb = this.dynamodb;
+
+    const hashKeyName = table.KeySchema[0].AttributeName;
+    const rangeKeyName = table.KeySchema.length > 1 ? table.KeySchema[1].AttributeName : null;
 
     return new Promise((resolve, reject) => {
       const params = {
-        TableName: tableName,
+        TableName: table.TableName,
         Key: {
         },
       };
 
-      params.Key[hashKey] = hashKeyValue;
-      if (rangeKey) {
-        params.Key[rangeKey] = rangeKeyValue;
+      params.Key[hashKeyName] = {
+        S: hashKey,
+      };
+      if (rangeKeyName) {
+        params.Key[rangeKeyName] = {
+          S: rangeKey,
+        };
       }
 
-      docClient.get(params, (error, data) => {
+
+      dynamodb.getItem(params, (error, data) => {
         if (error) {
           reject({ error });
         } else {

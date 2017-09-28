@@ -1,9 +1,9 @@
 import clientStorage from 'store';
+import Noty from 'noty';
 import Logger from '../utils/logger';
 import { initDynamoDBAws } from './dynamodb.action';
 
 const log = new Logger('ApplicationAction');
-
 
 // ======================================================
 // Action types
@@ -78,6 +78,17 @@ export const loadEnvironment = () => {
 export const initialize = () => {
   return (dispatch) => {
     log.debug('Initializing application...');
+
+    // Catch unhandled rejected promises and display a notification
+    window.addEventListener('unhandledrejection', (event) => {
+      if (event.reason) {
+        new Noty({
+          type: 'error',
+          text: event.reason.error.message,
+          timeout: 5000,
+        }).show();
+      }
+    });
 
     return dispatch({
       type: 'APPLICATION_PREINIT_CHECK',

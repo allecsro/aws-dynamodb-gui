@@ -79,26 +79,12 @@ export const queryItems = (tableName, hashKey, rangeKey, filters) => {
  * Fetches an item from a table based on its id (hash and/or range)
  * @returns {function(*=)}
  */
-export const getItem = (tableName, hashKey, rangeKey) => {
+export const getItem = (hashKey, rangeKey) => {
   return (dispatch, getState) => {
     const state = getState();
-    let table = null;
-    const tables = state.dynamodb.tables;
-
-    for (let i = 0; i < tables.length; i += 1) {
-      if (tables[i].TableName === tableName) {
-        table = tables[i];
-        break;
-      }
-    }
-
-    const hashKeyName = table.KeySchema[0].AttributeName;
-    const rangeKeyName = table.KeySchema.length === 2 ?
-      table.KeySchema[1].AttributeName : null;
-
     dispatch({
       type: GET_ITEM,
-      payload: AWS.getItem(tableName, hashKeyName, hashKey, rangeKeyName, rangeKey),
+      payload: AWS.getItem(state.dynamodb.table, hashKey, rangeKey),
     });
   };
 };

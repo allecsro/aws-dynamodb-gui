@@ -8,16 +8,6 @@ import { switchProfile } from '../../actions/application.action';
 
 class TablesContainer extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.onFilterChange = this.onFilterChange.bind(this);
-
-    this.state = {
-      filter: '',
-    };
-  }
-
   componentDidMount() {
     if (this.props.appProfile && this.props.match.params.profile &&
         this.props.match.params.profile !== this.props.appProfile) {
@@ -32,18 +22,12 @@ class TablesContainer extends React.Component {
     }
   }
 
-  onFilterChange(event) {
-    this.setState({
-      filter: event.target.value,
-    });
-  }
-
   render() {
     if (this.props.isLoadingTables) {
       return <div className="loading loading-lg" />;
     }
 
-    if (!this.props.tables || this.props.tables.length === 0) {
+    if (this.props.totalTablesCount === 0) {
       return <Empty title="No tables were found" />;
     }
 
@@ -52,22 +36,28 @@ class TablesContainer extends React.Component {
         <div className="columns s-tables-header">
           <div className="column col8">
             <div className="input-group input-inline">
-              <input className="form-input" type="text" onChange={this.onFilterChange} placeholder="search" />
-              <button className="btn btn-primary input-group-btn" onClick={() => this.props.filterTables(this.state.filter)}>Search</button>
+              <div className="has-icon-left">
+                <input className="form-input" type="text" onChange={event => this.props.filterTables(event.target.value)} placeholder="search" />
+                <i className="form-icon icon icon-search" />
+              </div>
+              <button className="btn btn-primary input-group-btn">
+                <i className="form-icon icon icon-cross" />
+              </button>
             </div>
           </div>
           <div className="column col-4 hide-sm text-right">
-            Viewing {this.props.size} tables.
+            Viewing {this.props.filteredTablesCount} of {this.props.totalTablesCount} tables.
           </div>
         </div>
-        <Tables {...this.props} />
+        {this.props.filteredTablesCount > 0 ?
+          <Tables {...this.props} /> :
+          <Empty title="No tables found for the given filter." />}
       </div>
     );
   }
 }
 
 TablesContainer.propTypes = {
-  size: PropTypes.number.isRequired,
   match: PropTypes.shape({
     params: PropTypes.object,
     url: PropTypes.string,
@@ -83,6 +73,8 @@ TablesContainer.propTypes = {
       TableSizeBytes: PropTypes.number,
     }),
   ),
+  filteredTablesCount: PropTypes.number.isRequired,
+  totalTablesCount: PropTypes.number.isRequired,
   appProfile: PropTypes.string.isRequired,
   filterTables: PropTypes.func.isRequired,
   switchProfile: PropTypes.func.isRequired,
@@ -90,14 +82,16 @@ TablesContainer.propTypes = {
 };
 
 TablesContainer.defaultProps = {
-  size: 0,
+  totalTablesCount: 0,
+  filteredTablesCount: 0,
   tables: [],
 };
 
 const mapStateToProps = (state) => {
   return {
     tables: state.dynamodb.tables,
-    size: state.dynamodb.tables.length,
+    totalTablesCount: state.dynamodb.totalTablesCount,
+    filteredTablesCount: state.dynamodb.filteredTablesCount,
     isLoadingTables: state.dynamodb.isLoadingTables,
     appProfile: state.application.currentProfile,
   };

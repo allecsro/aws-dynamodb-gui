@@ -34,7 +34,7 @@ const TableItemsList = (props) => {
           return (
             <td key={`${header}_${i}`}>
               {header === hashKey ?
-                <a href={`#${hk}`} onClick={() => props.getItem(props.table.TableName, hk, rk)}>
+                <a href={`#${hk}`} onClick={() => props.getItem(hk, rk)}>
                   {value}
                 </a>
                 :
