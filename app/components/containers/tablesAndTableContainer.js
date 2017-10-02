@@ -5,39 +5,37 @@ import Tables from '../elements/tables';
 import TableContainer from './tableContainer';
 import { filterTables } from '../../actions/dynamodb.action';
 
-const TablesAndTableContainer = (props) => {
-  return (
-    <div className="container">
-      <div className="columns s-tables-header">
-        <div className="column col8">
-          <div className="input-group input-inline">
-            <div className="has-icon-left">
-              <input className="form-input" type="text" onChange={event => props.filterTables(event.target.value)} placeholder="search" />
-              <i className="form-icon icon icon-search" />
-            </div>
-            <button className="btn btn-primary input-group-btn">
-              <i className="form-icon icon icon-cross" />
-            </button>
+const TablesAndTableContainer = props => (
+  <div className="container">
+    <div className="columns s-tables-header">
+      <div className="column col8">
+        <div className="input-group input-inline">
+          <div className="has-icon-left">
+            <input className="form-input" type="text" onChange={event => props.filterTables(event.target.value)} placeholder="search" />
+            <i className="form-icon icon icon-search" />
           </div>
-        </div>
-        <div className="column col-4 hide-sm text-right">
-          Viewing {props.size} tables.
+          <button className="btn btn-primary input-group-btn">
+            <i className="form-icon icon icon-cross" />
+          </button>
         </div>
       </div>
-      <div className="container">
-        <div className="columns">
-          <div className="column col-3">
-            <Tables {...props} />
-          </div>
-          <div className="divider-vert p-0" />
-          <div className="column col-9 s-table">
-            <TableContainer {...props} />
-          </div>
+      <div className="column col-4 hide-sm text-right">
+        Viewing {props.size} tables.
+      </div>
+    </div>
+    <div className="container">
+      <div className="columns">
+        <div className="column col-3">
+          <Tables {...props} />
+        </div>
+        <div className="divider-vert p-0" />
+        <div className="column col-9 s-table">
+          {props.size > 0 && <TableContainer {...props} />}
         </div>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 TablesAndTableContainer.propTypes = {
   size: PropTypes.number.isRequired,
