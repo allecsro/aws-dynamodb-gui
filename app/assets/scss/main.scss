@@ -457,6 +457,10 @@ h1, .h1 {
   box-shadow: -14px -6px 37px -22px $dark-color;
 }
 
+.tablesaw .tablesaw-sortable-head {
+  white-space: nowrap;
+}
+
 .Resizer {
   background: #e7e9ed;
   z-index: 1;
