@@ -46,6 +46,7 @@ export default class AwsConnector {
     });
 
     this.listTablesPromise = promisify(this.dynamodb.listTables.bind(this.dynamodb));
+    this.updateTablePromise = promisify(this.dynamodb.updateTable.bind(this.dynamodb));
     this.describeTablePromise = promisify(this.dynamodb.describeTable.bind(this.dynamodb));
     this.getItemPromise = promisify(this.docClient.get.bind(this.docClient));
     this.putItemPromise = promisify(this.docClient.put.bind(this.docClient));
@@ -168,5 +169,58 @@ export default class AwsConnector {
         }
       });
     });
+  }
+
+  /**
+   * Create a table index
+   * @param table
+   * @param item
+   */
+  createIndex(table, data) {
+    const createIndexParams = {
+      IndexName: data.indexName,
+      KeySchema: [
+        {
+          AttributeName: data.hashKey,
+          KeyType: 'HASH',
+        },
+      ],
+      Projection: { /* required */
+        ProjectionType: data.projectionType,
+      },
+      ProvisionedThroughput: { /* required */
+        ReadCapacityUnits: 1,
+        WriteCapacityUnits: 1,
+      },
+    };
+
+    if (data.rangeKey && data.rangeKey.length) {
+      createIndexParams.KeySchema.push({
+        AttributeName: data.rangeKey,
+        KeyType: 'RANGE',
+      });
+    }
+
+    const params = {
+      TableName: table.TableName,
+      AttributeDefinitions: [
+        {
+          AttributeName: data.hashKey,
+          AttributeType: data.hashKeyType,
+        },
+      ],
+      GlobalSecondaryIndexUpdates: [{
+        Create: createIndexParams,
+      }],
+    };
+
+    if (data.rangeKey && data.rangeKey.length) {
+      params.AttributeDefinitions.push({
+        AttributeName: data.rangeKey,
+        AttributeType: data.rangeKeyType,
+      });
+    }
+
+    return this.updateTablePromise(params);
   }
 }

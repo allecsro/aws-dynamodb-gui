@@ -11,6 +11,7 @@ let AWS = false;
 export const LOAD_TABLES = 'LOAD_TABLES';
 export const FILTER_TABLES = 'FILTER_TABLES';
 export const LOAD_TABLE = 'LOAD_TABLE';
+export const UPDATE_TABLE = 'UPDATE_TABLE';
 export const SCAN_ITEMS = 'SCAN_ITEMS';
 export const QUERY_ITEMS = 'QUERY_ITEMS';
 export const GET_ITEM = 'GET_ITEM';
@@ -125,6 +126,38 @@ export const saveItem = () => {
       });
   };
 };
+
+/**
+ * Creates a new index on the current table
+ * @param data
+ */
+export const createIndex = (data) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    AWS.createIndex(state.dynamodb.table, data)
+      .then((result) => {
+        dispatch({
+          type: UPDATE_TABLE,
+          payload: result,
+        });
+      });
+  };
+};
+
+/**
+ * Deletes the given index
+ * @param data
+ */
+export const deleteIndex = (hashKey, rangeKey) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    dispatch({
+      type: GET_ITEM,
+      payload: AWS.deleteIndex(state.dynamodb.table, hashKey, rangeKey),
+    });
+  };
+};
+
 
 /**
  * Initializes the DynamoDB AWS client

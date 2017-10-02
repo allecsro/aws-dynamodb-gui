@@ -440,6 +440,23 @@ h1, .h1 {
   }
 }
 
+.s-indexes .tooltip.tooltip-left::after {
+  bottom: 50%;
+  left: auto;
+  right: 100%;
+  transform: translate(0.4rem, 50%);
+  height: auto;
+  white-space: pre-wrap;
+  width: 300px;
+}
+
+.s-table {
+  background-color: #fff;
+  z-index: 1;
+  -webkit-box-shadow: -14px -6px 37px -22px $dark-color;
+  box-shadow: -14px -6px 37px -22px $dark-color;
+}
+
 .Resizer {
   background: #e7e9ed;
   z-index: 1;

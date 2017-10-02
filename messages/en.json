@@ -1,0 +1,28 @@
+{
+  "en": {
+    "appName": "DynamoDB UI",
+    "table": {
+      "indexes": {
+        "form": {
+          "key": "Primary key",
+          "hashKey": "Partition Key",
+          "hashKeyTooltip": [
+            "The primary key is made up of a partition key (hash key) and an optional sort key. ",
+            "The partition key is used to partition data across hosts for scalability and availability. ",
+            "Choose an attribute which has a wide range of values and is likely to have evenly distributed access patterns."
+          ],
+          "hasRangeKey": "Add sort key",
+          "rangeKeyTooltip": "The sort key allows for searching within a partition.",
+          "indexName": "Index name",
+          "indexNameTooltip": [
+            "When you issue query requests using the index, you will need to specify the index name.",
+            "The name must be unique per table."
+          ],
+          "projectedAttributes": "Projected attributes",
+          "projectedAttributesTooltip": "Projected attributes are attributes stored in the index, and can be returned by queries and scans performed on the index."
+        }
+      },
+      "profiles": "Profiles"
+    }
+  }
+}

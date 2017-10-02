@@ -87,6 +87,12 @@ export const initialize = () => {
           text: event.reason.error.message,
           timeout: 5000,
         }).show();
+      } else if (event.message) {
+        new Noty({
+          type: 'error',
+          text: event.message,
+          timeout: 5000,
+        }).show();
       }
     });
 

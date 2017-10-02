@@ -3,6 +3,7 @@ import {
   LOAD_TABLES,
   FILTER_TABLES,
   LOAD_TABLE,
+  UPDATE_TABLE,
   SCAN_ITEMS,
   QUERY_ITEMS,
   GET_ITEM,
@@ -71,6 +72,43 @@ const DynamoDbReducer = (state = window.INITIAL_STATE.dynamodb, action) => {
       }
 
       return state;
+    }
+
+    case UPDATE_TABLE: {
+      const table = action.payload.TableDescription;
+      const unfilteredTables = [].concat(state.tables);
+      const tables = [].concat(state.tables);
+      const newState = Object.assign({}, state, { table });
+
+      if (tables && tables.length) {
+        for (let i = 0; i < tables.length; i += 1) {
+          if (table.TableName === tables[i].TableName) {
+            tables[i] = table;
+
+            Object.assign(newState, {
+              tables,
+            });
+
+            break;
+          }
+        }
+      }
+
+      if (unfilteredTables && unfilteredTables.length) {
+        for (let i = 0; i < unfilteredTables.length; i += 1) {
+          if (table.TableName === unfilteredTables[i].TableName) {
+            unfilteredTables[i] = table;
+
+            Object.assign(newState, {
+              unfilteredTables,
+            });
+
+            break;
+          }
+        }
+      }
+
+      return newState;
     }
 
     case `${SCAN_ITEMS}_PENDING`:

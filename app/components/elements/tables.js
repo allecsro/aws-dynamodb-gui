@@ -22,6 +22,10 @@ class Tables extends React.Component {
    * @returns {*}
    */
   renderTables() {
+    if (!this.props.tables) {
+      return null;
+    }
+
     return this.props.tables.map((table) => {
       const name = table.TableName;
       const id = table.TableArn;
