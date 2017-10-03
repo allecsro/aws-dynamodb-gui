@@ -146,15 +146,18 @@ export const createIndex = (data) => {
 
 /**
  * Deletes the given index
- * @param data
+ * @param index
  */
-export const deleteIndex = (hashKey, rangeKey) => {
+export const deleteIndex = (index) => {
   return (dispatch, getState) => {
     const state = getState();
-    dispatch({
-      type: GET_ITEM,
-      payload: AWS.deleteIndex(state.dynamodb.table, hashKey, rangeKey),
-    });
+    AWS.deleteIndex(state.dynamodb.table, index)
+      .then((result) => {
+        dispatch({
+          type: UPDATE_TABLE,
+          payload: result,
+        });
+      });
   };
 };
 

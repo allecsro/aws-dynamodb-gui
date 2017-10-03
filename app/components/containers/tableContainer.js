@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loadTable, createIndex } from '../../actions/dynamodb.action';
+import { loadTable, createIndex, deleteIndex } from '../../actions/dynamodb.action';
 import Table from '../elements/table';
 
 class TableContainer extends React.Component {
@@ -46,6 +46,7 @@ TableContainer.propTypes = {
   }),
   loadTable: PropTypes.func.isRequired,
   onSaveIndex: PropTypes.func.isRequired,
+  onDeleteIndex: PropTypes.func.isRequired,
 };
 
 TableContainer.defaultProps = {
@@ -71,6 +72,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onSaveIndex: (data) => {
     dispatch(createIndex(data));
+  },
+  onDeleteIndex: (index) => {
+    dispatch(deleteIndex(index));
   },
 });
 

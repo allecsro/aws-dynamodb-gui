@@ -174,7 +174,7 @@ export default class AwsConnector {
   /**
    * Create a table index
    * @param table
-   * @param item
+   * @param data
    */
   createIndex(table, data) {
     const createIndexParams = {
@@ -223,4 +223,24 @@ export default class AwsConnector {
 
     return this.updateTablePromise(params);
   }
+
+  /**
+   * Deletes a table index
+   * @param table
+   * @param indexName
+   */
+  deleteIndex(table, index) {
+    const params = {
+      TableName: table.TableName,
+      AttributeDefinitions: table.AttributeDefinitions,
+      GlobalSecondaryIndexUpdates: [{
+        Delete: {
+          IndexName: index.IndexName,
+        },
+      }],
+    };
+
+    return this.updateTablePromise(params);
+  }
+
 }

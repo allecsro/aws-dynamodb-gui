@@ -9,6 +9,7 @@ class TableIndexesTab extends React.Component {
 
     this.state = {
       create: false,
+      selected: false,
     };
 
     this.showCreateIndexForm = this.showCreateIndexForm.bind(this);
@@ -38,7 +39,13 @@ class TableIndexesTab extends React.Component {
           <section className="column col-xs-8 s-navbar-actions">
             <button className="btn btn-primary" onClick={this.showCreateIndexForm}>Create index</button>
             {'\u00a0'}
-            <button className="btn btn-primary disabled">Delete index</button>
+            <button
+              className={`btn btn-primary ${this.state.selected ? '' : 'disabled'}`}
+              disabled={!this.state.selected}
+              onClick={() => this.props.onDeleteIndex(this.state.selected)}
+            >
+              Delete index
+            </button>
           </section>
         </header>
 
@@ -67,7 +74,17 @@ class TableIndexesTab extends React.Component {
 
                   return (
                     <tr key={index.IndexName}>
-                      <td><input type="radio" /></td>
+                      <td>
+                        <input
+                          type="radio"
+                          name="selectedIndex"
+                          disabled={index.IndexStatus !== 'ACTIVE'}
+                          value={index.IndexName}
+                          onChange={() => this.setState({
+                            selected: index,
+                          })}
+                        />
+                      </td>
                       <td>{index.IndexName}</td>
                       <td>{index.IndexStatus}</td>
                       <td>GSI</td>
@@ -120,6 +137,7 @@ TableIndexesTab.propTypes = {
     TableSizeBytes: PropTypes.number,
   }).isRequired,
   onSaveIndex: PropTypes.func.isRequired,
+  onDeleteIndex: PropTypes.func.isRequired,
 };
 
 export default TableIndexesTab;
