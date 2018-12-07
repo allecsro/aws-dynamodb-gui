@@ -3,6 +3,7 @@ import promisify from 'es6-promisify';
 import Logger from '../utils/logger';
 
 const log = new Logger('AwsConnector');
+const PAGE_SIZE = 20;
 
 /**
  * Amazon Web Services connector
@@ -87,6 +88,7 @@ export default class AwsConnector {
     return new Promise((resolve, reject) => {
       const params = {
         TableName: tableName,
+        Limit: PAGE_SIZE,
       };
 
       if (filters && Object.keys(filters).length > 0) {
