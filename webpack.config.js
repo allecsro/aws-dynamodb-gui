@@ -9,6 +9,8 @@ const ReplacePlugin = require('replace-webpack-plugin');
 const env = require('./config');
 
 const config = {
+  mode: 'development',
+
   devtool: 'cheap-module-eval-source-map',
 
   entry: [

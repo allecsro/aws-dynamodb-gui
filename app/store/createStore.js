@@ -7,7 +7,7 @@ export default (initialState = {}) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================
-  const middlewares = [thunkMiddleware, promiseMiddleware()];
+  const composeStoreWithMiddleware = [thunkMiddleware, promiseMiddleware.default()];
 
   // ======================================================
   // Store Enhancers
@@ -25,7 +25,7 @@ export default (initialState = {}) => {
     makeRootReducer(),
     initialState,
     compose(
-      applyMiddleware(...middlewares),
+      applyMiddleware(...composeStoreWithMiddleware),
       ...enhancers,
     ),
   );

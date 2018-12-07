@@ -3,17 +3,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Shoestring from 'tablesaw';
+import Tablesaw from 'tablesaw';
 
 class Tables extends React.Component {
 
 
   componentDidMount() {
-    Shoestring(document).trigger('enhance.tablesaw');
+    Tablesaw.$(document).trigger('enhance.tablesaw');
   }
 
   componentDidUpdate() {
-    Shoestring(document).trigger('enhance.tablesaw');
+    Tablesaw.$(document).trigger('enhance.tablesaw');
   }
 
   /**
