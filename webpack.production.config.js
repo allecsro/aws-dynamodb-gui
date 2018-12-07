@@ -8,6 +8,8 @@ const ReplacePlugin = require('replace-webpack-plugin');
 const env = require('./config');
 
 const config = {
+  mode: 'production',
+
   devtool: 'cheap-module-source-map',
 
   entry: [
