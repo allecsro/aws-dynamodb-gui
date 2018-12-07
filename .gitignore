@@ -59,8 +59,6 @@ npm-debug.log
 # coverage
 
 /coverage
-/yarn.lock
-/package-lock.json
 /dist/
 /config.js
 /build/index.html
