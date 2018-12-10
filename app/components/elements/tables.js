@@ -3,18 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Tablesaw from 'tablesaw';
 
 class Tables extends React.Component {
-
-
-  componentDidMount() {
-    Tablesaw.$(document).trigger('enhance.tablesaw');
-  }
-
-  componentDidUpdate() {
-    Tablesaw.$(document).trigger('enhance.tablesaw');
-  }
 
   /**
    * Renders the list of tables
@@ -53,7 +43,7 @@ class Tables extends React.Component {
       return (
         <tr key={id}>
           <td style={{ width: 40, textAlign: 'center' }}>
-            <input type="radio" checked={this.props.table && table.TableName === this.props.table.TableName} />
+            <input type="radio" checked={this.props.table && table.TableName === this.props.table.TableName} onChange={() => {}} />
           </td>
           <td>
             <Link to={`/tables/${name}`}>{name}</Link>

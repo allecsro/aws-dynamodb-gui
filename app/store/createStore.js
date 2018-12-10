@@ -7,7 +7,8 @@ export default (initialState = {}) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================
-  const composeStoreWithMiddleware = [thunkMiddleware, promiseMiddleware.default()];
+  console.log(promiseMiddleware);
+  const composeStoreWithMiddleware = [thunkMiddleware, promiseMiddleware()];
 
   // ======================================================
   // Store Enhancers

@@ -21,13 +21,13 @@ const config = {
     './assets/scss/main.scss',
   ],
 
+  context: resolve(__dirname, 'app'),
+
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, 'dist'),
     publicPath: '',
   },
-
-  context: resolve(__dirname, 'app'),
 
   devServer: {
     hot: true,
@@ -42,16 +42,16 @@ const config = {
     rules: [
       {
         enforce: "pre",
-        test: /\.(js|jsx)$/,
+        test: /\.js?$/,
         exclude: /node_modules/,
         loader: "eslint-loader"
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.js?$/,
+        exclude: /node_modules/,
         loaders: [
           'babel-loader',
-        ],
-        exclude: /node_modules/,
+        ]
       },
       {
         test: /\.scss$/,

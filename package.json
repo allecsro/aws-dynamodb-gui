@@ -30,7 +30,6 @@
     ]
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
     "aws-sdk": "^2.372.0",
     "cross-env": "5.0.1",
     "es6-promisify": "^5.0.0",
